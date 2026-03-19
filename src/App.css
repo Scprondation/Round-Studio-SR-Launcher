@@ -1,0 +1,632 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Inter:wght@800;900&display=swap");
+
+/* Global theme tokens.
+   Change these first if you want a fast color refresh. */
+:root {
+  --bg: #1a1a1a;
+  --surface: #1e1e1e;
+  --line: #2f2f2f;
+  --text: #f4f4f4;
+  --muted: #b8b8b8;
+  --green: #9ecd9c;
+  --yellow: #f2d77a;
+  --red: #e58484;
+}
+
+/* App shell and the main launcher card. */
+.launcher-root {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  position: relative;
+  overflow: auto;
+}
+
+.menu-wrap {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.menu-card {
+  width: min(92vw, 980px);
+  max-width: 980px;
+  min-width: 320px;
+  min-height: 620px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 25px;
+  display: grid;
+  grid-template-rows: 88px minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.menu-top {
+  background: var(--green);
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 24px;
+}
+
+.menu-top h1 {
+  margin: 0;
+  font-size: clamp(26px, 2.2vw, 38px);
+  font-weight: 900;
+  text-transform: lowercase;
+}
+
+.menu-tabs {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 8px;
+}
+
+.menu-tab {
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 17, 17, 0.18);
+  background: rgba(17, 17, 17, 0.08);
+  color: #111;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: lowercase;
+  cursor: pointer;
+}
+
+.menu-tab.is-active {
+  background: #111;
+  color: var(--green);
+}
+
+/* Main launcher view: hero image on the left, 3D skin on the right. */
+.preview-frame {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 292px);
+  align-items: stretch;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(180deg, #1e1e1e 0%, #191919 100%);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.preview-image {
+  min-width: 0;
+  min-height: 280px;
+}
+
+.preview-frame img {
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  object-fit: cover;
+  border: 1px solid #2b2b2b;
+  background: #121212;
+}
+
+.skin-preview {
+  border: 1px solid #2b2b2b;
+  border-radius: 18px;
+  background: #141414;
+  display: grid;
+  place-items: center;
+  padding: 12px 8px 8px;
+  gap: 8px;
+  min-height: 280px;
+}
+
+.skin-preview canvas {
+  width: 100%;
+  max-width: 280px;
+  height: 320px;
+  border-radius: 12px;
+  background: radial-gradient(circle at 50% 35%, #2b2b2b 0%, #181818 70%);
+}
+
+.skin-preview span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: lowercase;
+}
+
+.menu-bottom {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: 16px;
+  padding: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.menu-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.menu-bottom label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: lowercase;
+}
+
+.menu-bottom select {
+  min-height: 46px;
+  border-radius: 12px;
+  border: 1px solid #393939;
+  background: #252525;
+  color: var(--text);
+  padding: 0 10px;
+  font: inherit;
+  font-size: 14px;
+}
+
+.menu-bottom input {
+  min-height: 46px;
+  border-radius: 12px;
+  border: 1px solid #393939;
+  background: #252525;
+  color: var(--text);
+  padding: 0 10px;
+  font: inherit;
+  font-size: 14px;
+}
+
+.play-button {
+  width: 100%;
+  max-width: 320px;
+  justify-self: end;
+  min-height: 58px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--green);
+  color: #101010;
+  font: inherit;
+  font-size: clamp(28px, 3.5vw, 38px);
+  font-weight: 900;
+  text-transform: lowercase;
+  cursor: pointer;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.play-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.play-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Floating notifications used for install and launch feedback. */
+.notice-stack {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 20;
+  display: grid;
+  gap: 0;
+}
+
+.notice {
+  width: 227px;
+  min-height: 100px;
+  border-radius: 0 0 25px 25px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 1fr 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.notice + .notice {
+  margin-top: -2px;
+}
+
+.notice-text {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 900;
+  color: #1a1a1a;
+  text-transform: lowercase;
+  padding: 4px 8px;
+}
+
+.notice-bar {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.notice-bar > div {
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  transition: width 140ms linear;
+}
+
+.notice-yellow {
+  background: var(--yellow);
+}
+
+.notice-green {
+  background: var(--green);
+}
+
+.notice-red {
+  background: var(--red);
+}
+
+.status-line {
+  position: fixed;
+  left: 18px;
+  bottom: 14px;
+  color: #8f8f8f;
+  font-size: 12px;
+  text-transform: lowercase;
+}
+
+.menu-bottom input:focus-visible,
+.menu-bottom select:focus-visible,
+.play-button:focus-visible,
+.mods-search-button:focus-visible,
+.content-kind-tab:focus-visible,
+.mods-page-button:focus-visible,
+.menu-tab:focus-visible,
+.mod-install-button:focus-visible,
+.mods-view input:focus-visible,
+.mods-view select:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 1px;
+}
+
+/* Content browser: mods, resource packs and shaders share the same layout. */
+.mods-view {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  gap: 16px;
+  padding: 18px;
+}
+
+.content-kind-tabs {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 10px;
+  justify-content: start;
+}
+
+.content-kind-tab {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid #343434;
+  background: #242424;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: lowercase;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.content-kind-tab.is-active {
+  background: var(--green);
+  color: #101010;
+  border-color: rgba(158, 205, 156, 0.55);
+}
+
+/* Search toolbar and list panels for Modrinth content. */
+.mods-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(150px, 190px)) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.mods-toolbar label,
+.mods-search {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: lowercase;
+}
+
+.mods-view input,
+.mods-view select {
+  min-height: 46px;
+  border-radius: 12px;
+  border: 1px solid #393939;
+  background: #252525;
+  color: var(--text);
+  padding: 0 12px;
+  font: inherit;
+  font-size: 14px;
+}
+
+.mods-search-button,
+.mod-install-button {
+  min-height: 46px;
+  border-radius: 14px;
+  border: 0;
+  background: var(--green);
+  color: #111;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: lowercase;
+  cursor: pointer;
+}
+
+.mods-search-button:disabled,
+.mod-install-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.mods-warning {
+  border: 1px solid rgba(242, 215, 122, 0.25);
+  background: rgba(242, 215, 122, 0.08);
+  color: #f2d77a;
+  border-radius: 16px;
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.mods-grid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.mods-panel {
+  min-height: 0;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, #1b1b1b 0%, #171717 100%);
+  border-radius: 20px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.mods-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.mods-panel-head h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: lowercase;
+}
+
+.mods-panel-head span {
+  min-width: 32px;
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #252525;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.mods-panel-copy {
+  margin: 0;
+  padding: 12px 16px 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+  text-transform: lowercase;
+}
+
+.mods-list {
+  min-height: 0;
+  overflow: auto;
+  padding: 12px;
+  display: grid;
+  gap: 12px;
+}
+
+.mods-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.mods-pagination span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: lowercase;
+}
+
+.mods-page-button {
+  min-width: 112px;
+  min-height: 42px;
+  border-radius: 12px;
+  border: 1px solid #353535;
+  background: #242424;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: lowercase;
+  cursor: pointer;
+}
+
+.mods-page-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.mods-empty {
+  border: 1px dashed #3a3a3a;
+  border-radius: 16px;
+  padding: 18px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.mod-card,
+.installed-mod-card {
+  border: 1px solid #2d2d2d;
+  border-radius: 18px;
+  background: #202020;
+  padding: 14px;
+}
+
+.mod-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+}
+
+.mod-copy {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.mod-copy strong,
+.installed-mod-card strong {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.mod-copy span,
+.installed-mod-card span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: lowercase;
+}
+
+.mod-copy p {
+  margin: 0;
+  color: #d6d6d6;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.installed-mod-card {
+  display: grid;
+  gap: 6px;
+}
+
+/* Responsive breakpoints.
+   Tune these blocks if the launcher needs a different small-window behavior. */
+@media (max-width: 1100px) {
+  .menu-card {
+    width: min(94vw, 980px);
+  }
+
+  .preview-frame {
+    grid-template-columns: 1fr;
+  }
+
+  .play-button {
+    justify-self: stretch;
+    max-width: none;
+  }
+
+  .mods-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mods-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .content-kind-tabs {
+    grid-auto-flow: row;
+  }
+}
+
+@media (max-width: 760px) {
+  .menu-card {
+    grid-template-rows: 78px minmax(0, 1fr) auto;
+    min-height: 0;
+  }
+
+  .menu-wrap {
+    padding: 12px;
+  }
+
+  .menu-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .play-button {
+    width: 100%;
+    max-width: none;
+  }
+
+  .skin-preview canvas {
+    height: 240px;
+  }
+
+  .menu-top {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    padding: 14px 16px;
+  }
+
+  .mods-view {
+    padding: 12px;
+  }
+
+  .mods-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .mod-card {
+    grid-template-columns: 1fr;
+  }
+
+  .mods-pagination {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mods-page-button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition-duration: 0ms !important;
+  }
+}
